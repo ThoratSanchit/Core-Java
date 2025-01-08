@@ -1,0 +1,17 @@
+Loops in Java
+Definition: A loop in Java is used to repeat a block of code multiple times.
+It is useful when you want to perform a task repeatedly without writing the same code multiple times.
+
+Types of Loops:
+
+1) For loop: Used when the number of iterations is known in advance.
+2) While loop: Used when the number of iterations is not known in advance,
+    but a condition needs to be checked before each iteration.
+3) Do-while loop: Similar to the while loop, but it guarantees at least
+   one iteration because the condition is checked after the loop runs.
+
+
+Why we use loops:
+To avoid redundancy: If you need to repeat an action multiple times, you can write it in a loop rather than repeating the same code.
+To process collections of data: Loops help process arrays, lists, or other collections.
+To automate repetitive tasks: For example, calculating the sum of numbers or finding the maximum element in an array.

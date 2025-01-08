@@ -1,0 +1,9 @@
+Definition:
+Exception handling in Java is a mechanism to handle runtime errors, ensuring the normal flow of the program.
+It uses a combination of try, catch, finally, throw, and throws keywords.
+
+
+Why Use Exception Handling?
+Prevent Crashes: Ensures the program doesn't terminate unexpectedly.
+Error Diagnosis: Helps identify the cause of the error.
+Graceful Recovery: Allows the program to recover or provide meaningful feedback to the user.
