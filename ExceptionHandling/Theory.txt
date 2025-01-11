@@ -7,3 +7,18 @@ Why Use Exception Handling?
 Prevent Crashes: Ensures the program doesn't terminate unexpectedly.
 Error Diagnosis: Helps identify the cause of the error.
 Graceful Recovery: Allows the program to recover or provide meaningful feedback to the user.
+
+
+
+**Exception Handling in Java**
+Exception handling is a mechanism to handle runtime errors, ensuring the program's normal flow is maintained. Java provides a powerful set of tools to deal with exceptions systematically.
+
+**Key Concepts**
+What is an Exception?
+
+An exception is an event that disrupts the normal flow of a program.
+Examples include dividing by zero, accessing an invalid array index, or opening a file that doesn't exist.
+Types of Exceptions:
+
+**Custom Exceptions**
+You can create your own exceptions by extending the Exception class.
