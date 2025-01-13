@@ -14,9 +14,11 @@ public class CustomException {
             Scanner sc = new Scanner(System.in);
             System.out.println("Enter the nuber");
             byte number = sc.nextByte();
+            sc.close();
             if (number < 0) {
                 throw new NegativeNumberException("Age must be a posiive");
             }
+           
         } catch (NegativeNumberException error) {
             System.out.println(error.getMessage());
         }
