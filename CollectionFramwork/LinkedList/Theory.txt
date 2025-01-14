@@ -58,7 +58,7 @@ A)Basic Operations
 
 B) Queue-Specific Methods
 
-1) offer(E e)  :--	Adds the specified element to the end of the list (queue behavior).
+1) offer(E e)      :--	Adds the specified element to the end of the list (queue behavior).
 2) poll()	   :--  Retrieves and removes the first element of the list, or returns null if the list is empty.
 3) peek()	   :--  Retrieves, but does not remove, the first element of the list, or returns null if empty.
 
@@ -75,7 +75,7 @@ c) Traversal Methods
 
 1) iterator()	         :--  Returns an iterator to traverse the list.
 2) descendingIterator()  :--  Returns an iterator to traverse the list in reverse order.
-3) listIterator()	     :--  Returns a list iterator to traverse and modify the list.
+3) listIterator()	 :--  Returns a list iterator to traverse and modify the list.
 
 **Advantages**
 
