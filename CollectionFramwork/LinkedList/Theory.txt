@@ -1,0 +1,90 @@
+** LinkedList in Java**
+
+A LinkedList is a linewr data structure where elements(node) are connected using references (or pointers).
+Each node contains 2 parts:--
+
+1) Data: The actual value.
+2) Pointer: A reference to the next node in the sequence.
+
+** Java provides the LinkedList class in the java.util package, which is a part of the Java Collections Framework.**
+
+
+**Features of LinkedList**
+
+Implements both List and Deque interfaces.
+Allows for dynamic memory allocation (unlike arrays, which have fixed sizes).
+Efficient for insertions and deletions at both ends (head and tail).
+Not efficient for random access (compared to an ArrayList).
+
+**Structure**
+
+1) Singly Linked List:
+ach node points to the next node.
+The last node points to null.
+
+2) Doubly Linked List:
+Each node has pointers to both the next and previous nodes.
+
+3)Circular Linked List:
+The last node points to the first node, forming a loop.
+
+   git config --global user.name "Sanchit_Thorat" git config --global user.email "sanchit.thorat@thehirehq.com"
+**When to Use LinkedList**
+
+1) Insertions and Deletions:
+If frequent insertions and deletions are required,
+especially at the start or middle, a LinkedList is more efficient than an ArrayList.
+Example: Implementing a queue or stack.
+
+2)Dynamic Size:
+When the size of the data is not known in advance and frequent resizing is needed.
+
+3)Sequential Access:
+When the application involves sequential traversal rather than random access.
+
+**LinkedList Methods**
+
+A)Basic Operations
+	                                       
+1) add(E e)                  :--  Appends the specified element to the end of the list.
+2) add(int index, E element) :--  Inserts the specified element at the specified position in the list.
+3) remove(int index)         :--  Removes the element at the specified position.
+4) remove(Object o)          :--  Removes the first occurrence of the specified element.
+5) get(int index)            :--  Returns the element at the specified position.
+6) set(int index, E element) :--  Replaces the element at the specified position with the specified element.
+7) size()                    :--  Returns the number of elements in the list.
+8) isEmpty()                 :--  Returns true if the list contains no elements.
+9) clear()                   :--  Removes all elements from the list
+
+B) Queue-Specific Methods
+
+1) offer(E e)  :--	Adds the specified element to the end of the list (queue behavior).
+2) poll()	   :--  Retrieves and removes the first element of the list, or returns null if the list is empty.
+3) peek()	   :--  Retrieves, but does not remove, the first element of the list, or returns null if empty.
+
+c)Deque-Specific Methods
+
+1) addFirst(E e)  :--	Inserts the specified element at the beginning of the list.
+2) addLast(E e)	  :--   Inserts the specified element at the end of the list.
+3) removeFirst()  :--	Removes and returns the first element.
+4) removeLast()	  :--   Removes and returns the last element.
+5) getFirst()	  :--   Returns the first element without removing it.
+6) getLast()	  :--   Returns the last element without removing it.
+
+c) Traversal Methods
+
+1) iterator()	         :--  Returns an iterator to traverse the list.
+2) descendingIterator()  :--  Returns an iterator to traverse the list in reverse order.
+3) listIterator()	     :--  Returns a list iterator to traverse and modify the list.
+
+**Advantages**
+
+1) Dynamic Memory Usage           :   No need to specify the size upfront.
+2) Efficient Insertions/Deletions :   Especially in the middle or ends of the list.
+3) No Memory Wastage              :   Unlike arrays, there's no need to allocate extra memory.
+
+**Disadvantages**
+
+5) Slow Random Access             :  To access the n-th element, the list needs to traverse from the start.
+6) Higher Memory Overhead         :  Each node requires additional memory for pointers.
+7) Complex Manipulations          :  Operations like reversing the list are more complex compared to arrays.

@@ -20,21 +20,21 @@ Type: The type of elements the list will hold (e.g., Integer, String, CustomClas
 ArrayList<(Integer)> list = new ArrayList<>();
 
     **Method**	                                          **Description**
-1) add(E e):--  	                Adds an element to the end of the list.
-2) add(int index, E element):-- 	Inserts an element at the specified index.
-3) remove(Object o):--	            Removes the first occurrence of the specified element.
-4) remove(int index):--	            Removes the element at the specified index.
-5) set(int index, E element):-- 	Replaces the element at the specified index with the specified element.
-6) get(int index):--            	Returns the element at the specified index.
-7) size():--	                    Returns the number of elements in the list.
-8) isEmpty():--                 	Checks if the list is empty.
-9) contains(Object o):--	        Checks if the list contains the specified element.
-10) indexOf(Object o):--        	Returns the index of the first occurrence of the specified element.
-11) clear():--                  	Removes all elements from the list.
-12) addAll(Collection<? extends E> c):--	Adds all elements of the specified collection to the list.
-13) removeAll(Collection<?> c):--	Removes all elements that are present in the specified collection.
-14) retainAll(Collection<?> c):--	Retains only the elements in this list that are contained in the specified collection.
-15) toArray():--                	Converts the list into an array.
+1) add(E e)                            :--  Adds an element to the end of the list.
+2) add(int index, E element)           :-- 	Inserts an element at the specified index.
+3) remove(Object o)                    :--  Removes the first occurrence of the specified element.
+4) remove(int index)                   :--  Removes the element at the specified index.
+5) set(int index, E element)           :-- 	Replaces the element at the specified index with the specified element.
+6) get(int index)                      :--  Returns the element at the specified index.
+7) size()                              :--  Returns the number of elements in the list.
+8) isEmpty()                           :--  Checks if the list is empty.
+9) contains(Object o)                  :--  Checks if the list contains the specified element.
+10) indexOf(Object o)                  :--  Returns the index of the first occurrence of the specified element.
+11) clear()                            :--  Removes all elements from the list.
+12) addAll(Collection<? extends E> c)  :--	Adds all elements of the specified collection to the list.
+13) removeAll(Collection<?> c)         :--	Removes all elements that are present in the specified collection.
+14) retainAll(Collection<?> c)         :--  Retains only the elements in this list that are contained in the specified collection.
+15) toArray()                          :--  Converts the list into an array.
 
 
 **When to Use an ArrayList**
