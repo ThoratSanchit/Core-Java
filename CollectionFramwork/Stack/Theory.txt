@@ -1,0 +1,30 @@
+**Stack in Java**
+
+A Stack in Java is a linear data structure that operates based on the Last In,
+First Out (LIFO) principle. It is part of the java.util package and extends the Vector class,
+inheriting its methods and properties while adding specific operations for stack functionality.
+
+**Key Features**
+
+!) LIFO Principle :  The last element added to the stack is the first one removed.
+2) Dynamic Size   :  The stack resizes dynamically as elements are added or removed.
+3) Extends Vector :  Inherits properties of the Vector class.
+4) Thread-Safe    :  Stack methods are synchronized, making it thread-safe for concurrent use.
+
+
+**How to Use**
+
+import java.util.Stack;
+Stack<Type> stack = new Stack<>();
+Type: The type of elements the stack will hold (e.g., Integer, String, CustomClass).
+
+**Common Methods in Stack**
+
+1) push(E e)	     :--  Adds an element to the top of the stack.
+2) pop()	         :--  Removes and returns the top element of the stack. Throws EmptyStackException if the stack is empty.
+3) peek()	         :--  Returns the top element without removing it. Throws EmptyStackException if the stack is empty.
+4) isEmpty()	     :--  Checks if the stack is empty.
+5) search(Object o)	 :--  Returns the 1-based position of the element from the top of the stack. Returns -1 if not found.
+6) size()	         :-   Returns the number of elements in the stack.
+7) clear()	         :--  Removes all elements from the stack.
+

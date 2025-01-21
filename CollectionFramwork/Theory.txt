@@ -1,5 +1,0 @@
-collection:--
-The root interface for all the other collection type.
-
-List:--
-An ordered collection that can contain duplicate elements 

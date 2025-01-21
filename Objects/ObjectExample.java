@@ -21,7 +21,7 @@ class Car {
     String color;
     int speed;
 
-    // Constructor to initialize object
+    // Constructor to initialize object 
     Car(String brand, String color, int speed) {
         this.brand = brand;
         this.color = color;
@@ -33,7 +33,7 @@ class Car {
         System.out.println("Brand: " + brand + ", Color: " + color + ", Speed: " + speed + " km/h");
     }
 
-    // Method to increase speed
+    // Method to increase speed 
     void accelerate(int increment) {
         speed += increment;
         System.out.println(brand + " accelerated to " + speed + " km/h.");
