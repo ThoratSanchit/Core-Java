@@ -1,0 +1,14 @@
+1) Interface is a user defined datatype. is a group of abstract methods.
+2) An interface is a completely "abstract class" that is used to group related methods with empty bodies:
+3) we can extends the multiple interfaces in a single interface.  unlike classes(one class extends at a time only one class).
+4) To use the interface we use the implements keyword.
+5) Interface methods are by default abstract and public.
+6) Interface attributes are by default public, static and final.
+7) It cannot contains the constructor.
+
+ex:--
+
+interface Home{
+    void coock();
+    void bathRoom();
+}

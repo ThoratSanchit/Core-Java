@@ -1,0 +1,25 @@
+Data abstraction:== is the process of hiding certain details and showing only essential information to the user.
+Abstraction can be achieved with either abstract classes or interfaces
+
+
+** abstract  keyword is used to make the abstract class. **
+
+
+*** Abstract class ***
+1) A class contains atleast one abstract metghod is called abstract class.  it is a combination of abstract and concrete methods.
+2) It cannot be used to create the object
+
+*** Concrete class ***
+Which contains instance methods and datamembers.  all normal classes is the example of concrete class.
+
+*** Abstract Methods***
+
+1) A method which does not contains body  is called the  abstract methods.
+
+ex:--   
+abstract class Animal {
+  public abstract void animalSound();
+  public void sleep() {
+    System.out.println("Zzz");
+  }
+}
