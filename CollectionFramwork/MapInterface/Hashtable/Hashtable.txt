@@ -1,0 +1,8 @@
+***Description:***
+    1) Legacy class (since Java 1.0).
+    2) Similar to HashMap but thread-safe (synchronized).
+    3) Does not allow null keys or values.
+    4)Slower than HashMap due to synchronization.
+
+**)When to Use:
+   *)When you need a thread-safe map (though ConcurrentHashMap is preferred in modern Java).

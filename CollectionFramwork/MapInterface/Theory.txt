@@ -1,0 +1,80 @@
+******What is the Map Interface? *****
+
+1) The Map interface is part of the java.util package.
+
+2) It represents a collection of key-value pairs where each key is unique.
+
+3) A Map cannot contain duplicate keys, and each key maps to exactly one value.
+
+4) It does not extend the Collection interface.
+
+
+**Common Methods in the Map Interface**
+**Here are the most commonly used methods in the Map interface:**
+
+**********Basic Operations:***********
+
+1) put(K key, V value):           Adds a key-value pair to the map.
+
+2) get(Object key):               Returns the value associated with the specified key.
+
+3) remove(Object key):            Removes the key-value pair for the specified key.
+
+4) containsKey(Object key):       Checks if the map contains a specific key.
+
+5) containsValue(Object value):   Checks if the map contains a specific value.
+
+6) size():                        Returns the number of key-value pairs in the map.
+
+7) isEmpty():                      Checks if the map is empty.
+
+
+***********Bulk Operations:*************
+
+1) putAll(Map<? extends K, ? extends V> m): Copies all key-value pairs from another map.
+
+2) clear(): Removes all key-value pairs from the map.
+
+
+************Views:**********************
+
+1) keySet():    Returns a Set of all keys in the map.
+
+2) values():    Returns a Collection of all values in the map.
+
+3) entrySet():  Returns a Set of all key-value pairs (as Map.Entry objects).
+
+
+
+
+*****Iterating Through a Map******
+You can iterate through a Map using:
+
+1) keySet(): 
+        for (String key : map.keySet()) {
+              System.out.println(key + " -> " + map.get(key));
+        } 
+
+2) entrySet():
+        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+              System.out.println(entry.getKey() + " -> " + entry.getValue());
+        }
+
+3) forEach() Method (Java 8+):
+        map.forEach((key, value) -> System.out.println(key + " -> " + value));
+
+
+
+************ When to Use Which Map Implementation? *****************
+
+1) HashMap:        Default choice for most use cases (fast and efficient).
+2) LinkedHashMap:  When you need to maintain insertion or access order.
+3) TreeMap:        When you need elements sorted by keys.
+4) Hashtable:      Legacy, thread-safe map (use ConcurrentHashMap instead for modern applications).
+
+
+*********Summary********
+
+1) HashMap: No order (neither insertion nor sorted).
+2) LinkedHashMap: Maintains insertion order.
+3) TreeMap: Maintains sorted order.

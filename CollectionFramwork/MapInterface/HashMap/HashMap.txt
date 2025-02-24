@@ -1,0 +1,8 @@
+**) Description:
+   1) Stores key-value pairs in a hash table.
+   2) Does not maintain any order (neither insertion nor sorted order).
+   3) Allows one null key and multiple null values.
+   4) Provides O(1) time complexity for get() and put() operations (on average).
+
+**) When to Use:
+    #) When you need fast lookups and don’t care about the order of elements

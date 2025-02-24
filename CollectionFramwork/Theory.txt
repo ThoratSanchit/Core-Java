@@ -1,0 +1,13 @@
+When to Use Which Collection?
+
+1) ArrayList: When you need fast random access and don’t care about insertions/deletions in the middle.
+
+2) LinkedList: When you need frequent insertions/deletions.
+
+3) HashSet: When you need fast lookups and don’t care about order.
+
+4) TreeSet: When you need sorted elements.
+
+5) HashMap: When you need key-value pairs with fast lookups.
+
+6) TreeMap: When you need sorted key-value pairs.

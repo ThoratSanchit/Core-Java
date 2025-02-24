@@ -1,0 +1,7 @@
+**) Description:
+    1) Stores key-value pairs in a sorted order (natural ordering or custom comparator).
+    2) Does not allow null keys but allows null values.
+    3) Provides O(log n) time complexity for get() and put() operations.
+
+#) When to Use:
+    *)When you need elements to be sorted by keys.

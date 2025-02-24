@@ -1,0 +1,57 @@
+**ArrayList in Java**
+An ArrayList in Java is a part of the java.util package and provides a resizable array,
+which means it can grow or shrink dynamically as elements are added or removed. Unlike arrays,
+ArrayList is not fixed in size, and it provides several convenient methods to manipulate the data.
+
+**Key Features**
+Dynamic Sizing: Automatically resizes itself when elements are added or removed.
+Indexed Access: Provides fast access to elements using an index.
+Type-Safe: Supports generics, ensuring type safety at compile time.
+
+**How to Use**
+
+import java.util.ArrayList;
+ArrayList<Type> list = new ArrayList<>();
+
+Type: The type of elements the list will hold (e.g., Integer, String, CustomClass).
+
+
+**Common Methods in ArrayList**
+ArrayList<(Integer)> list = new ArrayList<>();
+
+    **Method**	                                          **Description**
+1) add(E e)                            :--  Adds an element to the end of the list.
+2) add(int index, E element)           :-- 	Inserts an element at the specified index.
+3) remove(Object o)                    :--  Removes the first occurrence of the specified element.
+4) remove(int index)                   :--  Removes the element at the specified index.
+5) set(int index, E element)           :-- 	Replaces the element at the specified index with the specified element.
+6) get(int index)                      :--  Returns the element at the specified index.
+7) size()                              :--  Returns the number of elements in the list.
+8) isEmpty()                           :--  Checks if the list is empty.
+9) contains(Object o)                  :--  Checks if the list contains the specified element.
+10) indexOf(Object o)                  :--  Returns the index of the first occurrence of the specified element.
+11) clear()                            :--  Removes all elements from the list.
+12) addAll(Collection<? extends E> c)  :--	Adds all elements of the specified collection to the list.
+13) removeAll(Collection<?> c)         :--	Removes all elements that are present in the specified collection.
+14) retainAll(Collection<?> c)         :--  Retains only the elements in this list that are contained in the specified collection.
+15) toArray()                          :--  Converts the list into an array.
+
+
+**When to Use an ArrayList**
+1) Dynamic Collections: When the size of the collection is unknown or changes frequently.
+2) Random Access: When frequent access to elements by index is required.
+3) Ordered Data: When maintaining the order of insertion is important.
+
+**Limitations**
+1) Not Synchronized: ArrayLists are not thread-safe. Use Collections.synchronizedList() for multi-threaded applications.
+2) Performance: Insertion and deletion in the middle can be slow due to element shifting.
+
+
+
+**Comparison with Other Collections**
+
+Feature	                  ArrayList	    LinkedList	   Vector
+Resizable	               Yes	           Yes	        Yes
+Thread-Safe  	           No	           No	        Yes
+Access Time (Index)	       O(1)	           O(n)	        O(1)
+Insertion/Deletion (Mid)   O(n)	           O(1)	        O(n)

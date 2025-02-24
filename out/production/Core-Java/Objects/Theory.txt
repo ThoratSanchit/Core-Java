@@ -1,0 +1,6 @@
+What are Objects in Java?
+In Java, an object is an instance of a class.
+A class defines the blueprint or template for objects,
+and the object represents a specific entity with unique data and behaviors.
+Objects store state (attributes) and behavior (methods).
+

@@ -1,0 +1,12 @@
+Definition:
+A function (or method in Java) is a block of code that performs a specific task.
+It allows code to be reused and organized into logical units. Functions can take input parameters and return a value.
+
+Types of Functions:
+
+1) Void Function: A function that doesn't return any value.
+2) Return Function: A function that returns a value after processing.
+
+
+Arguments:
+Arguments: The values passed to a function when calling it.

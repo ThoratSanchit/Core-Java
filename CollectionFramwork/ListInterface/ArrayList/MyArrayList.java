@@ -1,4 +1,4 @@
-package CollectionFramwork.ArrayList;
+package CollectionFramwork.ListInterface.ArrayList;
 
 import java.util.ArrayList;
 import java.util.Scanner;

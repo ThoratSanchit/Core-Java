@@ -10,12 +10,8 @@ public class Prime {
         }
         System.out.println(flag);
     }
-
     public static void main(String[] args) {
         Prime p = new Prime();
         p.prime(5);
     }
 }
-
-
-

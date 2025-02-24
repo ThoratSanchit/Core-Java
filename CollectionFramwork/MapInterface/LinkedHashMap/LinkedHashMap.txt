@@ -1,0 +1,9 @@
+**Description**
+
+1) Extends HashMap and maintains insertion order or access order (depending on the constructor).
+2) Allows one null key and multiple null values.
+3) Slightly slower than HashMap due to maintaining order.
+
+
+#) When to Use:
+    *) When you need to maintain the insertion or access order of elements.
