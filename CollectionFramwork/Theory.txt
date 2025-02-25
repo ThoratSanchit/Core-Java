@@ -11,3 +11,60 @@ When to Use Which Collection?
 5) HashMap: When you need key-value pairs with fast lookups.
 
 6) TreeMap: When you need sorted key-value pairs.
+
+
+*****Java Collection Framework hierarchy*****
+
+1) collection Interface
+
+         Collection Interface (Stores groups of elements)
+         ├── List Interface (Allows duplicates, maintains insertion order)
+         │   ├── ArrayList (✅ Fast random access, ❌ Slow insert/delete in middle)
+         │   ├── LinkedList (✅ Fast insert/delete in middle, ❌ Slow random access)
+         │   └── Vector (legacy) (✅ Thread-safe but ❌ Slower than ArrayList)
+         │       └── Stack (legacy) (✅ LIFO, ❌ Use ArrayDeque instead)
+         ├── Set Interface (Unique elements, no duplicates)
+         │   ├── HashSet (✅ Fastest lookup, ❌ No order guarantee)
+         │   ├── LinkedHashSet (✅ Maintains insertion order, ❌ Slightly slower than HashSet)
+         │   └── SortedSet Interface (Sorted elements)
+         │       └── TreeSet (✅ Keeps elements sorted, ❌ Slower than HashSet)
+         ├── Queue Interface (FIFO operations)
+         │   ├── PriorityQueue (✅ Sorted based on priority, ❌ No FIFO guarantee)
+         │   └── Deque Interface (Double-ended queue)
+         │       ├── ArrayDeque (✅ Best for stack/queue, ❌ No indexing like ArrayList)
+         │       └── LinkedList (✅ Fast inserts/deletes, ❌ More memory overhead)
+
+2) Map Interface
+
+         Map Interface (Stores Key-Value pairs)
+         ├── HashMap (✅ Fastest lookup, ❌ No order guarantee, ❌ Not thread-safe)
+         ├── LinkedHashMap (✅ Maintains insertion order, ❌ Slower than HashMap)
+         ├── TreeMap (✅ Sorted by key, ❌ Slower than HashMap)
+         └── Hashtable (legacy) (✅ Thread-safe, ❌ Slower than ConcurrentHashMap, ❌ No null keys/values)
+
+
+
+🔥 Best Practices
+
+✔ Use ArrayList for most list operations, unless frequent inserts/deletes are needed.
+✔ Use HashMap for key-value storage, unless sorting or ordering is required.
+✔ Use ConcurrentHashMap instead of Hashtable in multi-threaded environments.
+✔ Use ArrayDeque instead of Stack for better performance.
+
+
+🚀 When to Use Each Type?
+   (Type)	                                (Best Use Case)
+ArrayList	                    Fast random access, read-heavy operations.
+LinkedList	                    Frequent insert/delete in middle.
+Vector (Legacy)	                Thread-safe but slow, prefer synchronizedList(ArrayList).
+Stack (Legacy)	                LIFO operations, but prefer ArrayDeque.
+HashSet	                        Unique elements, fastest lookup, order doesn't matter.
+LinkedHashSet	                Unique elements with insertion order.
+TreeSet	                        Unique elements in sorted order.
+PriorityQueue	                Elements need to be processed by priority.
+ArrayDeque	                    Better stack & queue implementation than Stack/LinkedList.
+LinkedList (Deque)	            Double-ended operations, frequent insertions/removals.
+HashMap	                        Fastest key-value lookup, order doesn't matter.
+LinkedHashMap	                Key-value with insertion order.
+TreeMap	                        Key-value with sorted order.
+Hashtable (Legacy)	            Thread-safe, but prefer ConcurrentHashMap.

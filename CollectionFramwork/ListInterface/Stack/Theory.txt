@@ -28,3 +28,23 @@ Type: The type of elements the stack will hold (e.g., Integer, String, CustomCla
 6) size()	         :-   Returns the number of elements in the stack.
 7) clear()	         :--  Removes all elements from the stack.
 
+******Iterating Through a List******
+
+1) for loop:--
+            for (int i = 0; i < list.size(); i++) {
+                System.out.println(list.get(i));
+            }
+
+2) Enhanced for-loop:
+            for (String item : list) {
+                System.out.println(item);
+            }
+
+3) Iterator:
+            Iterator<String> it = list.iterator();
+            while (it.hasNext()) {
+                System.out.println(it.next());
+            }
+
+4) forEach() Method (Java 8+):
+            list.forEach(item -> System.out.println(item));

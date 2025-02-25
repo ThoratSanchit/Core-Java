@@ -1,0 +1,8 @@
+***Description****
+
+1) Legacy class (since Java 1.0).
+2) Similar to ArrayList but thread-safe (synchronized).
+3) Slower than ArrayList due to synchronization.
+
+***When to Use***
+    *) When you need a thread-safe list (though Collections.synchronizedList() is preferred in modern Java)
