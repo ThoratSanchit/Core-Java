@@ -1,0 +1,9 @@
+1) Definition:      A priority-based queue where elements are ordered based on their natural ordering or a custom comparator.
+
+2) Order:           Elements are ordered based on priority (not FIFO).
+
+3) Null Elements:   Does not allow null elements.
+
+4) Performance:     Provides O(log n) time complexity for add() and poll() operations.
+
+5) When to Use:     When you need elements processed based on priority.

@@ -1,0 +1,69 @@
+**********What is the Set Interface?**********
+1) The Set interface extends the Collection interface.
+2) It represents an unordered collection of elements (except for SortedSet, which maintains order).
+3) It does not allow duplicate elements. If you try to add a duplicate element, it will simply be ignored.
+4) It allows at most one null element (depending on the implementation).
+
+
+****Set Interface Hierarchy****
+
+Set Interface
+├── HashSet
+├── LinkedHashSet
+└── SortedSet Interface
+    └── TreeSet
+
+
+****** Common Methods in the Set Interface ******
+
+##### Basic Operations #####
+
+    1) add(E e): Adds an element to the set (if it is not already present).
+
+    2) remove(Object o): Removes the specified element from the set.
+
+    3) contains(Object o): Checks if the set contains the specified element.
+
+    4) size(): Returns the number of elements in the set.
+
+    5) isEmpty(): Checks if the set is empty.
+
+
+
+##### Bulk Operations #####
+
+    1) addAll(Collection<? extends E> c): Adds all elements from another collection to the set.
+
+    2) retainAll(Collection<?> c): Retains only the elements in the set that are also in the specified collection.
+
+    3) removeAll(Collection<?> c): Removes all elements from the set that are also in the specified collection.
+
+    4) clear(): Removes all elements from the set.
+
+
+
+##### Iteration #####
+
+    1) iterator(): Returns an iterator to traverse the set.
+
+    2) forEach(): Iterates through the set using a lambda expression (Java 8+).
+
+
+
+
+****When to Use Which Set Implementation****
+
+(Set Implementation)	        (When to Use)
+1) HashSet	                When you need fast lookups and don’t care about order.
+2) LinkedHashSet	        When you need to maintain insertion order and ensure uniqueness.
+3) TreeSet	                When you need elements to be sorted and unique.
+
+
+
+*****Key Differences Between Set Implementations****
+
+Feature         	HashSet	                LinkedHashSet	                TreeSet
+Order	            No order	            Insertion order	                Sorted order
+Null Elements	    Allows one null     	Allows one null     	        Does not allow null
+Performance	        O(1)	                Slightly slower	                O(log n)
+Use Case	        Fast lookups	        Insertion order + fast	        Sorted + unique

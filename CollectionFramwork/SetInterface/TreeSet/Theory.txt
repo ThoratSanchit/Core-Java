@@ -1,0 +1,9 @@
+1) Definition:      A Set implementation that stores elements in a sorted order (natural or custom).
+
+2) Order:           Maintains elements in sorted order.
+
+3) Null Elements:   Does not allow null elements.
+
+4) Performance:     Provides O(log n) time complexity for add(), remove(), and contains() operations.
+
+5) When to Use:     When you need elements to be sorted and unique.

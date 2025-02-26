@@ -1,0 +1,9 @@
+#) Definition:     A hash table implementation of the Set interface.
+
+#) Order:          Does not maintain any order of elements.
+
+#) Null Elements:  Allows one null element.
+
+#) Performance:    Provides O(1) time complexity for add(), remove(), and contains() operations (on average).
+
+#) When to Use:    When you need fast lookups and don’t care about order.

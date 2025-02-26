@@ -1,0 +1,9 @@
+1) Definition:      A HashSet that maintains insertion order.
+
+2) Order:           Maintains the order in which elements are inserted.
+
+3) Null Elements:   Allows one null element.
+
+4) Performance:     Slightly slower than HashSet due to maintaining order.
+
+5) When to Use:     When you need to maintain insertion order and ensure uniqueness.

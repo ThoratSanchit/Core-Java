@@ -1,0 +1,30 @@
+**** What is the Queue Interface ****
+
+    1) The Queue interface extends the Collection interface.
+
+    2) It represents a collection designed for holding elements before processing.
+
+    3) It follows the FIFO (First-In-First-Out) principle by default, meaning the element that is added first is the first one to be removed.
+
+    4) Some implementations (like PriorityQueue) can order elements based on priority.
+
+
+********** Common Methods in the Queue Interface **********
+
+1) Insertion:
+
+        add(E e): Adds an element to the queue. Throws an exception if the queue is full.
+
+        offer(E e): Adds an element to the queue. Returns false if the queue is full.
+
+2) Removal:
+
+        remove(): Removes and returns the element at the head of the queue. Throws an exception if the queue is empty.
+
+        poll(): Removes and returns the element at the head of the queue. Returns null if the queue is empty.
+
+3) Inspection:
+
+        element(): Retrieves, but does not remove, the element at the head of the queue. Throws an exception if the queue is empty.
+
+        peek(): Retrieves, but does not remove, the element at the head of the queue. Returns null if the queue is empty.

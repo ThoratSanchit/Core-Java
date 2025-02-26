@@ -1,0 +1,51 @@
+Queue Interface
+├── PriorityQueue
+└── Deque Interface
+    ├── ArrayDeque
+    └── LinkedList
+
+
+1) Definition:      A double-ended queue that supports element insertion and removal at both ends.
+
+2) Order:           Can be used as a FIFO queue or a LIFO stack.
+
+3) Null Elements:   Depends on the implementation (e.g., ArrayDeque does not allow null).
+
+4) When to Use:     When you need a double-ended queue (insert/remove from both ends).
+
+
+******Implementations:*******
+
+1) ArrayDeque:
+
+        1) Definition: A resizable array implementation of the Deque interface.
+
+        2) Performance: Provides O(1) time complexity for add(), remove(), and peek() operations.
+
+        3) When to Use: When you need a resizable array implementation of a double-ended queue.
+
+2) LinkedList:
+
+        1) Definition: A doubly-linked list implementation of the Deque interface.
+
+        2) Performance: Provides O(1) time complexity for add(), remove(), and peek() operations.
+
+        3) When to Use: When you need a linked list implementation of a double-ended queue.
+
+
+
+***********When to Use Which Queue Implementation?**********
+
+     (Queue Implementation)	                                (When to Use)
+    1) PriorityQueue	                             When you need elements processed based on priority.
+    2) ArrayDeque	                                 When you need a resizable array implementation of a double-ended queue.
+    3) LinkedList	                                 When you need a linked list implementation of a double-ended queue.
+
+
+******* Key Differences Between Queue Implementations *******
+
+(Feature)	    (PriorityQueue)	                (ArrayDeque)	                             (LinkedList)
+Order	        Priority-based	                FIFO or LIFO	                              FIFO or LIFO
+Null Elements	Not allowed	                    Not allowed	                                  Allowed
+Performance 	O(log n) for add/poll	        O(1) for add/remove/peek	                  O(1) for add/remove/peek
+Use Case	    Priority-based queue	        Double-ended queue	                          Double-ended queue
