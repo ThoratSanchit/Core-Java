@@ -1,0 +1,254 @@
+# Java Streams
+
+## 1. What are Streams?
+A stream is a sequence of elements from a source that supports aggregate operations.
+- **Sequence of elements**: A stream provides a way to operate on a sequence of elements of a specific type.
+- **Source**: Streams consume from a data source such as collections, arrays, or I/O resources.
+- **Aggregate operations**: Streams support SQL-like operations or common functional programming operations, such as `filter`, `map`, `reduce`, `match`, `sorted`, etc.
+- **Pipelining**: Operations can be chained together to form a pipeline. This allows for a sequence of transformations and actions on the data.
+- **Automatic iteration**: Streams iterate internally over the elements, abstracting the iteration logic from the programmer.
+
+## 2. Advantages of using Streams
+- **Functional Programming**: Enables a more functional style of programming in Java, leading to more concise and readable code.
+- **Readability and Conciseness**: Operations on streams can often be expressed in a more declarative and less verbose way than traditional loops.
+- **Parallelism**: Streams can be processed in parallel with minimal code changes, potentially leading to significant performance improvements for large datasets.
+- **Lazy Evaluation**: Intermediate operations are only performed when a terminal operation is invoked, which can lead to performance gains by avoiding unnecessary computations.
+
+## 3. Differences between Collections and Streams
+| Feature         | Collections                                     | Streams                                                      |
+|-----------------|-------------------------------------------------|--------------------------------------------------------------|
+| **Traversal**   | Can be traversed multiple times.                | Typically traversed once. Consumed after a terminal operation. |
+| **Consumption** | Elements can be accessed, added, or removed.    | Elements are consumed and cannot be mutated directly.        |
+| **Data Storage**| Store elements and manage their memory.         | Do not store elements; they are computed on demand.          |
+| **Mutability**  | Can be mutable (e.g., adding/removing elements). | Immutable; operations return new streams.                    |
+| **When to Use** | For storing and managing groups of objects.     | For processing sequences of data in a functional way.        |
+
+## 4. Types of Stream Operations
+
+### Intermediate Operations
+Intermediate operations transform a stream into another stream. They are always lazy, meaning they don’t get executed until a terminal operation is invoked.
+- **`filter(Predicate<T> predicate)`**: Returns a stream consisting of the elements of this stream that match the given predicate.
+- **`map(Function<T, R> mapper)`**: Returns a stream consisting of the results of applying the given function to the elements of this stream.
+- **`flatMap(Function<T, Stream<R>> mapper)`**: Returns a stream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element. (Useful for flattening streams of streams).
+- **`sorted()`**: Returns a stream consisting of the elements of this stream, sorted according to natural order.
+- **`sorted(Comparator<T> comparator)`**: Returns a stream consisting of the elements of this stream, sorted according to the provided Comparator.
+- **`distinct()`**: Returns a stream consisting of the distinct elements (according to `Object.equals(Object)`) of this stream.
+- **`peek(Consumer<T> action)`**: Returns a stream consisting of the elements of this stream, additionally performing the provided action on each element as elements are consumed from the resulting stream. (Useful for debugging).
+- **`limit(long maxSize)`**: Returns a stream consisting of the elements of this stream, truncated to be no longer than `maxSize` in length.
+- **`skip(long n)`**: Returns a stream consisting of the remaining elements of this stream after discarding the first `n` elements of the stream.
+
+### Terminal Operations
+Terminal operations produce a result (like a value or a collection) or a side-effect. Once a terminal operation is invoked, the stream is consumed and cannot be used again.
+- **`forEach(Consumer<T> action)`**: Performs an action for each element of this stream.
+- **`collect(Collector<T, A, R> collector)`**: Performs a mutable reduction operation on the elements of this stream using a `Collector`. (e.g., `Collectors.toList()`, `Collectors.toSet()`, `Collectors.toMap()`).
+- **`reduce(BinaryOperator<T> accumulator)`**: Performs a reduction on the elements of this stream, using an associative accumulation function, and returns an `Optional` describing the reduced value, if any.
+- **`reduce(T identity, BinaryOperator<T> accumulator)`**: Performs a reduction on the elements of this stream, using the provided identity value and an associative accumulation function, and returns the reduced value.
+- **`count()`**: Returns the count of elements in this stream.
+- **`anyMatch(Predicate<T> predicate)`**: Returns whether any elements of this stream match the provided predicate. (Short-circuiting)
+- **`allMatch(Predicate<T> predicate)`**: Returns whether all elements of this stream match the provided predicate. (Short-circuiting)
+- **`noneMatch(Predicate<T> predicate)`**: Returns whether no elements of this stream match the provided predicate. (Short-circuiting)
+- **`findFirst()`**: Returns an `Optional` describing the first element of this stream, or an empty `Optional` if the stream is empty. (Short-circuiting)
+- **`findAny()`**: Returns an `Optional` describing some element of the stream, or an empty `Optional` if the stream is empty. (Short-circuiting, especially useful for parallel streams).
+- **`min(Comparator<T> comparator)`**: Returns the minimum element of this stream according to the provided `Comparator`.
+- **`max(Comparator<T> comparator)`**: Returns the maximum element of this stream according to the provided `Comparator`.
+- **`toArray()`**: Returns an array containing the elements of this stream.
+
+## 5. Creating Streams
+- **From Collections**: `collection.stream()`
+  ```java
+  List<String> list = Arrays.asList("a", "b", "c");
+  Stream<String> streamFromList = list.stream();
+  ```
+- **From Arrays**: `Arrays.stream(arr)` or `Stream.of(arr)`
+  ```java
+  String[] array = {"a", "b", "c"};
+  Stream<String> streamFromArray = Arrays.stream(array);
+  Stream<String> streamFromArrayFull = Stream.of(array);
+  Stream<String> streamOfElements = Stream.of("a", "b", "c");
+  ```
+- **From Static Factory Methods**:
+  - **`Stream.of(T... values)`**: Creates a stream from a sequence of elements.
+  - **`Stream.empty()`**: Creates an empty stream.
+    ```java
+    Stream<String> streamEmpty = Stream.empty();
+    ```
+  - **`Stream.generate(Supplier<T> s)`**: Returns an infinite sequential unordered stream where each element is generated by the provided `Supplier`. Needs to be limited (e.g., with `limit()`).
+    ```java
+    Stream<String> streamGenerated = Stream.generate(() -> "element").limit(10);
+    ```
+  - **`Stream.iterate(T seed, UnaryOperator<T> f)`**: Returns an infinite sequential ordered stream produced by iterative application of a function `f` to an initial element `seed`. Needs to be limited.
+    ```java
+    Stream<Integer> streamIterated = Stream.iterate(0, n -> n + 2).limit(10);
+    ```
+  - **`Stream.iterate(T seed, Predicate<T> hasNext, UnaryOperator<T> next)` (Java 9+):** Creates a stream that stops when `hasNext` predicate returns false.
+    ```java
+    Stream.iterate(0, i -> i < 10, i -> i + 1).forEach(System.out::println);
+    ```
+  - **`Stream.builder()`**: Creates a stream using a builder pattern.
+    ```java
+    Stream<String> streamBuilder = Stream.<String>builder().add("x").add("y").add("z").build();
+    ```
+- **Primitive Streams**: For `int`, `long`, `double` to avoid boxing/unboxing overhead.
+  - **`IntStream`, `LongStream`, `DoubleStream`**
+  - **`IntStream.range(int startInclusive, int endExclusive)`**
+  - **`IntStream.rangeClosed(int startInclusive, int endInclusive)`**
+    ```java
+    IntStream intStream = IntStream.range(1, 5); // 1, 2, 3, 4
+    LongStream longStream = LongStream.rangeClosed(1, 5); // 1, 2, 3, 4, 5
+    ```
+  - `Random.ints()`, `Random.longs()`, `Random.doubles()`
+    ```java
+    Random random = new Random();
+    DoubleStream doubleStream = random.doubles(3); // 3 random doubles
+    ```
+- **From Strings**:
+  - **`String.chars()`**: Returns an `IntStream` representing the characters of the string.
+    ```java
+    IntStream streamOfChars = "abc".chars(); // Produces IntStream of ASCII values
+    ```
+  - **`Pattern.splitAsStream(CharSequence input)`**: Creates a stream from a string based on a regex delimiter.
+    ```java
+    Stream<String> streamOfString = Pattern.compile(", ").splitAsStream("a, b, c");
+    ```
+- **From Files**:
+  - **`Files.lines(Path path)`**: Returns a `Stream<String>` from a file, where each element is a line.
+    ```java
+    // Path path = Paths.get("file.txt");
+    // Stream<String> streamOfStrings = Files.lines(path);
+    // Stream<String> streamWithCharset = Files.lines(path, Charset.forName("UTF-8"));
+    ```
+- **`Stream.ofNullable(T t)` (Java 9+)**: Returns a sequential `Stream` containing a single element, if non-null, otherwise returns an empty `Stream`.
+
+## 6. Lazy Evaluation
+Intermediate operations on streams are lazy. This means they are not executed until a terminal operation is invoked. The processing of elements happens on demand.
+- **How it works**: When an intermediate operation is called, it doesn’t process the elements immediately. Instead, it adds the operation to a pipeline of operations. When a terminal operation is called, the stream starts pulling elements from the source and applying the pipeline of operations one by one to each element, or until the terminal operation's condition is met.
+- **Benefits**:
+  - **Performance**: Avoids unnecessary computations if the terminal operation doesn't require processing all elements (e.g., `findFirst()`, `anyMatch()`).
+  - **Efficiency**: Can process infinite streams because elements are generated and processed only as needed.
+
+Example:
+```java
+List<String> list = Arrays.asList("abc1", "abc2", "abc3");
+Optional<String> stream = list.stream().filter(element -> {
+    System.out.println("filter() was called for: " + element);
+    return element.contains("2");
+}).map(element -> {
+    System.out.println("map() was called for: " + element);
+    return element.toUpperCase();
+}).findFirst();
+// Output will show that filter() and map() are called only as many times as needed.
+```
+In this example, `filter()` would be called for "abc1", then for "abc2". Once "abc2" passes the filter, `map()` is called for "abc2". Then `findFirst()` is satisfied, and "abc3" is never processed by `filter()` or `map()`.
+
+## 7. Short-circuiting Operations
+Some stream operations are "short-circuiting". This means they may not need to process all elements in the stream to produce a result.
+- **Intermediate short-circuiting operations**: `limit(n)` (stops after n elements), `takeWhile(predicate)` (Java 9+, stops when predicate is false).
+- **Terminal short-circuiting operations**:
+  - `anyMatch(predicate)`: Stops as soon as an element matches the predicate.
+  - `allMatch(predicate)`: Stops as soon as an element does *not* match the predicate.
+  - `noneMatch(predicate)`: Stops as soon as an element matches the predicate.
+  - `findFirst()`: Stops after finding the first element.
+  - `findAny()`: Stops after finding any element (particularly useful in parallel streams).
+
+Short-circuiting is a consequence of lazy evaluation and can significantly improve performance by avoiding unnecessary processing.
+
+## 8. Parallel Streams
+Streams can be processed in parallel to leverage multi-core processors.
+- **How to create**:
+  - `collection.parallelStream()`
+  - `stream.parallel()`
+- **Benefits**:
+  - **Performance**: Can significantly speed up operations on large datasets by dividing the work among multiple threads.
+- **Potential Pitfalls**:
+  - **Shared Mutable State**: If the stream operations involve modifying shared mutable state, it can lead to race conditions and incorrect results. Ensure operations are stateless or handle concurrency appropriately.
+  - **Order of Execution**: The order of element processing is not guaranteed in parallel streams (unless explicitly maintained by operations like `forEachOrdered`).
+  - **Overhead**: For small datasets or simple operations, the overhead of managing parallel execution might outweigh the benefits.
+  - **Blocking Operations**: Avoid blocking operations in parallel streams as they can hinder performance.
+- **Converting back to sequential**: Use `stream.sequential()` to convert a parallel stream back to a sequential one.
+- **Underlying Mechanism**: Parallel streams use the Fork/Join Framework (specifically, the common `ForkJoinPool.commonPool()`) by default.
+
+Example:
+```java
+List<Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+numbers.parallelStream()
+       .filter(n -> n % 2 == 0)
+       .forEach(System.out::println); // Order is not guaranteed
+```
+
+## 9. Stream Pipelines
+A stream pipeline consists of:
+1. **Source**: Where the stream originates (e.g., Collection, Array, generator function).
+2. **Zero or more Intermediate Operations**: These transform the stream into another stream (e.g., `filter`, `map`, `sorted`). They are lazy.
+3. **One Terminal Operation**: This produces a result or a side-effect (e.g., `collect`, `forEach`, `count`). It triggers the execution of the pipeline.
+
+Example:
+```java
+List<String> myList = Arrays.asList("a1", "a2", "b1", "c2", "c1");
+
+myList.stream()             // 1. Source
+    .filter(s -> s.startsWith("c")) // 2. Intermediate Operation
+    .map(String::toUpperCase)    // 2. Intermediate Operation
+    .sorted()                    // 2. Intermediate Operation
+    .forEach(System.out::println); // 3. Terminal Operation (e.g., prints C1, C2)
+```
+Elements are processed through the pipeline one by one (or in parallel chunks for parallel streams).
+
+## 10. Stateless vs. Stateful Operations
+- **Stateless Operations**: An operation is stateless if the processing of an element does not depend on the state of other elements. Examples: `filter`, `map`, `flatMap`. These are generally cheaper and work well in parallel.
+- **Stateful Operations**: An operation is stateful if the processing of an element depends on information about other elements in the stream. Examples: `distinct` (needs to remember elements seen so far), `sorted` (needs to see all elements before sorting), `limit`, `skip` (depend on position). Stateful operations might require buffering all elements or may have higher overhead, especially in parallel processing.
+
+## 11. Common Collectors
+The `Collectors` class provides static factory methods for creating `Collector` instances, which are used with the `stream.collect()` terminal operation.
+- **`toList()`**: Collects stream elements into a `List`.
+  ```java
+  List<String> resultList = stream.collect(Collectors.toList());
+  ```
+- **`toSet()`**: Collects stream elements into a `Set` (duplicates removed).
+  ```java
+  Set<String> resultSet = stream.collect(Collectors.toSet());
+  ```
+- **`toMap(Function keyMapper, Function valueMapper)`**: Collects elements into a `Map`.
+  ```java
+  // Map<Long, String> resultMap = stream.collect(Collectors.toMap(MyObject::getId, MyObject::getName));
+  // Be careful with duplicate keys; variants exist to handle merge conflicts.
+  ```
+- **`joining()` / `joining(CharSequence delimiter)` / `joining(CharSequence delimiter, CharSequence prefix, CharSequence suffix)`**: Joins `CharSequence` elements into a single `String`.
+  ```java
+  String joinedString = stringStream.collect(Collectors.joining(", "));
+  ```
+- **`groupingBy(Function classifier)`**: Groups elements according to a classification function.
+  ```java
+  // Map<Department, List<Employee>> employeesByDept = employees.stream().collect(Collectors.groupingBy(Employee::getDepartment));
+  ```
+- **`groupingBy(Function classifier, Collector downstream)`**: Groups elements and then applies a downstream collector to the values in each group.
+  ```java
+  // Map<Department, Long> countByDept = employees.stream().collect(Collectors.groupingBy(Employee::getDepartment, Collectors.counting()));
+  ```
+- **`partitioningBy(Predicate predicate)`**: Partitions elements into a `Map<Boolean, List<T>>` based on whether they match a predicate.
+  ```java
+  // Map<Boolean, List<Student>> passingFailingStudents = students.stream().collect(Collectors.partitioningBy(s -> s.getGrade() >= 60));
+  ```
+- **`counting()`**: Returns a `Collector` that counts the number of input elements.
+  ```java
+  // long count = stream.collect(Collectors.counting());
+  // Often used as a downstream collector with groupingBy.
+  ```
+- **`summingInt(ToIntFunction mapper)` / `summingLong(ToLongFunction mapper)` / `summingDouble(ToDoubleFunction mapper)`**: Calculates the sum of an `int`/`long`/`double`-valued function applied to the input elements.
+  ```java
+  // int totalAge = persons.stream().collect(Collectors.summingInt(Person::getAge));
+  ```
+- **`averagingInt(ToIntFunction mapper)` / `averagingLong(ToLongFunction mapper)` / `averagingDouble(ToDoubleFunction mapper)`**: Calculates the average of an `int`/`long`/`double`-valued function applied to the input elements.
+  ```java
+  // double averageScore = students.stream().collect(Collectors.averagingDouble(Student::getScore));
+  ```
+- **`summarizingInt(ToIntFunction mapper)` / `summarizingLong(ToLongFunction mapper)` / `summarizingDouble(ToDoubleFunction mapper)`**: Returns a `IntSummaryStatistics` / `LongSummaryStatistics` / `DoubleSummaryStatistics` object that contains count, sum, min, average, and max.
+  ```java
+  // IntSummaryStatistics ageStats = persons.stream().collect(Collectors.summarizingInt(Person::getAge));
+  // System.out.println(ageStats.getAverage());
+  // System.out.println(ageStats.getCount());
+  ```
+
+This content covers the requested topics based on the Baeldung article's structure and information.
+I've formatted it with headings, bullet points, and code examples for readability.
+The file will be created at `JavaStreams/Theory.txt`.
+```
