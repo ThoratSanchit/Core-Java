@@ -1,0 +1,301 @@
+# Java Streams Interview Questions
+
+## Fundamentals
+
+**Q1: What is a Stream in Java? What are its main benefits?**
+- **Answer**: A Stream is a sequence of elements from a source that supports aggregate operations. It's not a data structure that stores elements, but rather a pipeline of computational steps.
+- **Main Benefits**:
+    - **Declarative Programming**: More readable and concise code compared to imperative loops.
+    - **Functional Style**: Enables functional programming paradigms in Java.
+    - **Lazy Evaluation**: Intermediate operations are only performed when a terminal operation is invoked, leading to potential performance gains.
+    - **Parallelism**: Streams can be processed in parallel with minimal code changes (`parallelStream()`), improving performance for large datasets.
+    - **Composability**: Operations can be chained together to form complex data processing pipelines.
+    - **No Side Effects (on source)**: Stream operations do not modify their source data structure.
+
+**Q2: What are the key differences between `Collection` and `Stream`?**
+- **Answer**:
+    | Feature          | Collection                                       | Stream                                                           |
+    |------------------|--------------------------------------------------|------------------------------------------------------------------|
+    | **Data Storage** | Stores elements. Is a data structure.            | Does not store elements. It's a view over a source.              |
+    | **Traversal**    | Can be iterated multiple times.                  | Can typically be traversed only once.                            |
+    | **Mutability**   | Can be mutable (elements can be added/removed).  | Immutable. Operations produce new streams.                       |
+    | **Eagerness**    | Elements are computed and stored eagerly.        | Elements are computed on demand (lazy evaluation for intermediate ops). |
+    | **Primary Use**  | Storing and managing groups of elements.         | Performing computations on a sequence of elements.               |
+    | **Iteration**    | External iteration (developer controls iteration). | Internal iteration (Stream API handles iteration).                 |
+
+**Q3: Can a Stream be consumed more than once? Why or why not?**
+- **Answer**: No, a Stream generally cannot be consumed more than once.
+- **Why**: Once a terminal operation is performed on a Stream, it is considered "consumed" or "closed." Attempting to reuse the same stream instance by invoking another terminal operation will result in an `IllegalStateException`. This is because Streams are designed to be like iterators that advance and process elements; once traversed, they cannot be reset. If you need to perform multiple operations on the same data, you should either:
+    1. Create a new Stream from the original source for each terminal operation.
+    2. Collect the results of an initial stream operation into a Collection, and then create new streams from that collection.
+
+## Operations
+
+**Q4: What is the difference between intermediate and terminal operations in Streams? Provide examples.**
+- **Answer**:
+    - **Intermediate Operations**:
+        - Transform a stream into another stream.
+        - Are always lazy: they don't execute until a terminal operation is invoked.
+        - Examples: `filter(Predicate)`, `map(Function)`, `flatMap(Function)`, `sorted()`, `distinct()`, `peek(Consumer)`, `limit(long)`, `skip(long)`.
+    - **Terminal Operations**:
+        - Produce a result (e.g., a primitive value, a Collection, or an `Optional`) or a side-effect (e.g., printing to console).
+        - Trigger the processing of the stream pipeline.
+        - Consume the stream, making it unavailable for further operations.
+        - Examples: `forEach(Consumer)`, `collect(Collector)`, `reduce()`, `count()`, `anyMatch(Predicate)`, `allMatch(Predicate)`, `noneMatch(Predicate)`, `findFirst()`, `findAny()`, `min(Comparator)`, `max(Comparator)`, `toArray()`.
+
+**Q5: Explain the concept of lazy evaluation in Java Streams. How does it improve performance?**
+- **Answer**: Lazy evaluation means that intermediate operations in a Stream pipeline are not executed immediately when they are declared. Instead, they are only executed when a terminal operation is invoked. The terminal operation initiates the data flow from the source through the intermediate operations.
+- **How it improves performance**:
+    - **Avoids Unnecessary Computations**: If a terminal operation can produce a result without processing all elements (e.g., `findFirst()`, `anyMatch()`, `limit()`), lazy evaluation ensures that only the necessary elements are processed.
+    - **Efficiency with Infinite Streams**: Allows working with potentially infinite streams, as elements are generated and processed only as needed.
+    - **Optimization**: The stream processing engine can sometimes optimize the pipeline by merging operations or using short-circuiting, which is possible due to laziness.
+
+**Q6: What are short-circuiting operations? Give some examples.**
+- **Answer**: Short-circuiting operations are operations that may not need to process all elements in the stream to produce a result. Once the condition for the operation is met, it can terminate early.
+- **Examples**:
+    - **Intermediate**: `limit(n)` (stops after `n` elements), `takeWhile(Predicate)` (Java 9+, stops when predicate is false).
+    - **Terminal**:
+        - `anyMatch(Predicate)`: Stops if an element matches.
+        - `allMatch(Predicate)`: Stops if an element *doesn't* match.
+        - `noneMatch(Predicate)`: Stops if an element matches.
+        - `findFirst()`: Stops after finding the first element.
+        - `findAny()`: Stops after finding any element.
+
+**Q7: Differentiate between `map()` and `flatMap()`. Provide a use case for each.**
+- **Answer**:
+    - **`map(Function<T, R> mapper)`**:
+        - Transforms each element of a stream into *another single element*.
+        - The mapper function returns a single value for each input element.
+        - If the mapper function returns a stream for each element, `map()` would result in a stream of streams (`Stream<Stream<R>>`).
+        - **Use Case**: Converting a list of strings to their uppercase versions (`list.stream().map(String::toUpperCase)`), or extracting a specific attribute from a list of objects (`people.stream().map(Person::getName)`).
+
+    - **`flatMap(Function<T, Stream<R>> mapper)`**:
+        - Transforms each element of a stream into *a stream of other elements*, and then "flattens" all these individual streams into a single, new stream (`Stream<R>`).
+        - The mapper function must return a `Stream` for each input element.
+        - **Use Case**:
+            - Flattening a list of lists into a single list: `List<List<Integer>> listOfLists; listOfLists.stream().flatMap(List::stream).collect(Collectors.toList());`
+            - Processing a list of sentences to get a unique list of all words: `sentences.stream().flatMap(sentence -> Arrays.stream(sentence.split(" "))).collect(Collectors.toSet());`
+
+**Q8: Explain the `reduce()` operation. What is an identity in the context of `reduce()`?**
+- **Answer**: The `reduce()` operation is a terminal operation that combines all elements of a stream into a single result. It repeatedly applies a binary operator to the elements until a single value remains.
+- **Forms of `reduce()`**:
+    1. `Optional<T> reduce(BinaryOperator<T> accumulator)`: Takes an associative accumulator function and returns an `Optional` (empty if the stream is empty).
+    2. `T reduce(T identity, BinaryOperator<T> accumulator)`: Takes an identity value and an accumulator. Returns the identity if the stream is empty.
+    3. `U reduce(U identity, BiFunction<U, ? super T, U> accumulator, BinaryOperator<U> combiner)`: Used for parallel streams, where the `combiner` merges results from different sub-parts.
+- **Identity**:
+    - The identity is an element that is the initial value of the reduction and also the default result if the stream is empty.
+    - For the accumulator function `(a, b) -> result`, the identity `I` must satisfy `accumulator.apply(I, element) == element`.
+    - Examples:
+        - For summation: identity is `0` (`0 + x = x`).
+        - For multiplication: identity is `1` (`1 * x = x`).
+        - For string concatenation: identity is `""` (empty string) (`"" + s = s`).
+
+**Q9: What is the purpose of the `peek()` operation? When might you use it?**
+- **Answer**: `peek(Consumer<T> action)` is an intermediate operation that allows you to perform an action on each element of the stream as it passes through that point in the pipeline, without modifying the element itself. It returns a stream consisting of the same elements.
+- **When to use it**:
+    - **Debugging**: The most common use case is to print or log elements at various stages of the stream pipeline to understand how data is being transformed.
+      ```java
+      list.stream()
+          .filter(s -> s.length() > 3)
+          .peek(s -> System.out.println("Filtered value: " + s))
+          .map(String::toUpperCase)
+          .peek(s -> System.out.println("Mapped value: " + s))
+          .collect(Collectors.toList());
+      ```
+    - **Caution**: Avoid using `peek()` for actions with side effects that modify external state, as this can violate the stateless nature expected of many stream operations, especially in parallel streams. Its primary design is for observing elements.
+
+## Stream Creation
+
+**Q10: How can you create a Stream in Java? List a few ways.**
+- **Answer**:
+    - From a Collection: `collection.stream()` or `collection.parallelStream()`
+    - From an Array: `Arrays.stream(array)` or `Stream.of(arrayElements)`
+    - From individual values: `Stream.of("a", "b", "c")`
+    - From a String: `string.chars()` (returns `IntStream`), `Pattern.compile(regex).splitAsStream(string)`
+    - From a File: `Files.lines(Path)`
+    - Using `Stream.generate(Supplier<T> s)`: Creates an infinite stream. (e.g., `Stream.generate(Math::random).limit(10)`)
+    - Using `Stream.iterate(T seed, UnaryOperator<T> f)`: Creates an infinite stream. (e.g., `Stream.iterate(0, n -> n + 2).limit(10)`)
+    - Using `Stream.builder()`: `Stream.<String>builder().add("x").add("y").build()`
+    - Empty Stream: `Stream.empty()`
+    - Primitive Streams: `IntStream.range(1, 10)`, `LongStream.of(1L, 2L)`, `DoubleStream.builder().add(1.0).build()`
+
+**Q11: How do you create a Stream from an array? From a List?**
+- **Answer**:
+    - **From an array `T[] arr`**:
+        - `Arrays.stream(arr)`: Preferred for arrays of objects or primitives.
+        - `Stream.of(arr)`: If `arr` is an array of objects, it creates `Stream<T>`. If `arr` is a primitive array (e.g., `int[]`), `Stream.of(arr)` creates a `Stream<int[]>`, i.e., a stream with a single element which is the array itself. So, `Arrays.stream()` is generally better for primitive arrays to get a stream of the primitive elements (e.g., `IntStream`).
+    - **From a `List<T> list`**:
+        - `list.stream()`: Creates a sequential stream.
+        - `list.parallelStream()`: Creates a parallel stream.
+
+**Q12: How can you create an empty Stream?**
+- **Answer**: Use the static factory method `Stream.empty()`.
+  ```java
+  Stream<String> emptyStream = Stream.empty();
+  ```
+  This is useful for returning a stream when there are no elements to process, avoiding `null` returns.
+
+**Q13: What are primitive Streams (IntStream, LongStream, DoubleStream)? Why are they useful?**
+- **Answer**: Primitive streams are specialized stream interfaces for `int`, `long`, and `double` primitive types.
+    - `IntStream`: Stream of `int` values.
+    - `LongStream`: Stream of `long` values.
+    - `DoubleStream`: Stream of `double` values.
+- **Why they are useful**:
+    - **Performance**: They avoid the overhead of boxing and unboxing primitive values into their wrapper classes (Integer, Long, Double) that would occur if a generic `Stream<Integer>` were used. This can lead to significant performance improvements for operations on many primitive values.
+    - **Specialized Operations**: They provide specialized operations relevant to numeric types, such as `sum()`, `average()`, `range()`, `rangeClosed()`, `summaryStatistics()`.
+
+## Collectors
+
+**Q14: What is the role of the `collect()` method in Streams?**
+- **Answer**: The `collect()` method is a terminal operation used to perform a mutable reduction on the elements of a stream. It takes a `Collector` as an argument, which specifies how to accumulate the stream elements into a summary result, often a `Collection` (like List, Set, Map) or a single value (like a concatenated String).
+
+**Q15: Explain some common `Collector` operations like `toList()`, `toSet()`, `toMap()`.**
+- **Answer**: These are static factory methods in the `java.util.stream.Collectors` class:
+    - **`Collectors.toList()`**: Accumulates stream elements into a new `List`. The order of elements in the list is generally the order in which they appear in the stream.
+    - **`Collectors.toSet()`**: Accumulates stream elements into a new `Set`. Duplicates are eliminated (based on `equals()` method). The order of elements is not guaranteed unless the underlying set implementation maintains order (e.g., `LinkedHashSet`).
+    - **`Collectors.toMap(Function keyMapper, Function valueMapper)`**: Accumulates stream elements into a new `Map`. The `keyMapper` function extracts the map key, and `valueMapper` extracts the map value from each stream element.
+        - **Important**: If multiple elements map to the same key, this version will throw an `IllegalStateException`.
+
+**Q16: How would you collect Stream elements into a Map? What are common issues (e.g., duplicate keys) and how to handle them?**
+- **Answer**: Use `Collectors.toMap()`.
+  ```java
+  // List<Person> people = ...;
+  // Map<Integer, Person> personMap = people.stream()
+  //      .collect(Collectors.toMap(Person::getId, Function.identity()));
+  ```
+- **Common Issues & Handling**:
+    - **Duplicate Keys**: If two or more stream elements result in the same key, the basic `Collectors.toMap(keyMapper, valueMapper)` will throw an `IllegalStateException`.
+    - **Handling Duplicates**: Use the overloaded version `Collectors.toMap(keyMapper, valueMapper, mergeFunction)`:
+      ```java
+      Map<String, Person> personByName = people.stream()
+          .collect(Collectors.toMap(
+              Person::getName,          // Key mapper
+              Function.identity(),      // Value mapper
+              (existing, replacement) -> existing // Merge function: keep existing on duplicate
+          ));
+      ```
+      The `mergeFunction` (a `BinaryOperator`) decides what to do if a key collision occurs (e.g., keep the existing value, use the new value, or combine them).
+    - **Specifying Map Implementation**: If you need a specific map implementation (e.g., `LinkedHashMap` to maintain insertion order), use `Collectors.toMap(keyMapper, valueMapper, mergeFunction, mapSupplier)`:
+      ```java
+      Map<String, Person> personByNameOrdered = people.stream()
+          .collect(Collectors.toMap(
+              Person::getName,
+              Function.identity(),
+              (e, r) -> e,
+              LinkedHashMap::new // Supplier for the map
+          ));
+      ```
+
+**Q17: Explain `groupingBy()` and `partitioningBy()` collectors.**
+- **Answer**:
+    - **`Collectors.groupingBy(Function<? super T, ? extends K> classifier)`**:
+        - Groups elements of a stream into a `Map<K, List<T>>`.
+        - The `classifier` function is applied to each element, and its result (`K`) is used as the key in the map. All elements yielding the same key are collected into a `List<T>` associated with that key.
+        - Example: Grouping people by city: `people.stream().collect(Collectors.groupingBy(Person::getCity))` results in `Map<String, List<Person>>`.
+        - Can also have a downstream collector: `groupingBy(classifier, downstreamCollector)` to further process the grouped lists (e.g., `Collectors.counting()`, `Collectors.summingInt()`).
+
+    - **`Collectors.partitioningBy(Predicate<? super T> predicate)`**:
+        - A specialized form of `groupingBy` that partitions elements into a `Map<Boolean, List<T>>`.
+        - The `predicate` is applied to each element. Elements for which the predicate returns `true` are put into the list associated with the key `Boolean.TRUE`, and others into the list for `Boolean.FALSE`.
+        - Example: Partitioning students into passing and failing: `students.stream().collect(Collectors.partitioningBy(s -> s.getScore() >= 60))`.
+        - Can also have a downstream collector: `partitioningBy(predicate, downstreamCollector)`.
+
+## Parallel Streams
+
+**Q18: What are parallel Streams? How can you create one?**
+- **Answer**: Parallel Streams are Streams that can process elements in parallel, utilizing multiple CPU cores. The work of processing elements is divided into subparts, processed concurrently, and then combined.
+- **How to create**:
+    - From a Collection: `collection.parallelStream()`
+    - Convert an existing sequential stream: `sequentialStream.parallel()`
+    - `IntStream.range(1, 100).parallel()` (for primitive streams too)
+
+**Q19: What are the advantages and disadvantages of using parallel Streams?**
+- **Answer**:
+    - **Advantages**:
+        - **Performance**: Can significantly speed up processing for large datasets by leveraging multi-core processors.
+        - **Simplified Parallelism**: Provides an easy way to introduce parallelism without manual thread management.
+    - **Disadvantages**:
+        - **Overhead**: For small datasets or very simple operations, the overhead of managing threads, splitting data, and combining results can make parallel streams slower than sequential ones.
+        - **Stateful Operations**: Operations that rely on or modify shared mutable state can lead to incorrect results or concurrency issues (race conditions) if not handled carefully. Stream operations should ideally be stateless.
+        - **Order Not Guaranteed**: The order of element processing is generally not guaranteed, which can be an issue if order matters (though operations like `forEachOrdered` can enforce order at a performance cost).
+        - **Debugging**: Debugging parallel streams can be more complex.
+        - **Blocking Operations**: If stream operations involve blocking I/O, it can lead to poor performance as threads in the common ForkJoinPool might get blocked.
+
+**Q20: When is it appropriate to use parallel Streams, and when should they be avoided?**
+- **Answer**:
+    - **Appropriate to use**:
+        - Large datasets.
+        - Computationally intensive operations per element.
+        - Operations are independent and stateless (or handle concurrency correctly).
+        - The source can be efficiently split (e.g., `ArrayList`, arrays).
+    - **Avoid when**:
+        - Small datasets or simple, fast operations.
+        - Operations involve shared mutable state without proper synchronization.
+        - Order of execution is critical and operations like `forEachOrdered` add too much overhead.
+        - Operations involve blocking I/O.
+        - The cost of splitting the source and combining results outweighs the benefits of parallelism (e.g., for `LinkedList` which splits poorly).
+    - **General advice**: Always measure performance before and after parallelizing to ensure it actually helps.
+
+**Q21: What is the underlying framework used by parallel streams?**
+- **Answer**: Parallel streams in Java use the **Fork/Join Framework** introduced in Java 7. By default, they use the common `ForkJoinPool.commonPool()`, a shared thread pool available across the application.
+
+## Optional Class
+
+**Q22: What is the `Optional` class and how is it used with Streams (e.g., with `findFirst()`, `findAny()`, `reduce()`, `min()`, `max()`)?**
+- **Answer**: `Optional<T>` is a container object that may or may not contain a non-null value. It's designed to provide a more elegant way to handle situations where a value might be absent, rather than returning `null` and risking `NullPointerExceptions`.
+- **Usage with Streams**:
+    - Terminal operations that might not find a result return an `Optional`:
+        - `findFirst()`: Returns `Optional<T>` describing the first element, or `Optional.empty()` if the stream is empty.
+        - `findAny()`: Returns `Optional<T>` describing some element, or `Optional.empty()`.
+        - `reduce((a,b) -> a+b)`: Returns `Optional<T>` as the stream might be empty.
+        - `min(Comparator)` / `max(Comparator)`: Returns `Optional<T>` as the stream might be empty.
+- **Common `Optional` methods**:
+    - `isPresent()`: Returns `true` if a value is present, `false` otherwise.
+    - `get()`: Returns the value if present, otherwise throws `NoSuchElementException`. (Use with caution, often after `isPresent()`).
+    - `orElse(T other)`: Returns the value if present, otherwise returns `other`.
+    - `orElseGet(Supplier<? extends T> other)`: Returns the value if present, otherwise returns the result of invoking `other`.
+    - `orElseThrow(Supplier<? extends X> exceptionSupplier)`: Returns the value if present, otherwise throws an exception created by the provided supplier.
+    - `ifPresent(Consumer<? super T> consumer)`: If a value is present, invokes the specified consumer with the value.
+    - `map(Function<? super T, ? extends U> mapper)`: If a value is present, applies the mapping function to it, and returns an `Optional` describing the result. Otherwise returns `Optional.empty()`.
+
+**Q23: How does `Optional` help in avoiding `NullPointerExceptions`?**
+- **Answer**:
+    - **Explicitly Represents Absence**: It forces the developer to think about the case where a value might be absent, instead of just returning `null`.
+    - **Provides Fluent API for Handling Absence**: Methods like `orElse()`, `orElseGet()`, `orElseThrow()`, and `ifPresent()` provide clear and safe ways to handle the case where a value is not present, without needing explicit `if (value != null)` checks.
+    - **Improved Readability**: Makes the code's intent clearer regarding optional values.
+
+## Stateful vs. Stateless
+
+**Q24: What is the difference between stateless and stateful intermediate operations? Give examples.**
+- **Answer**:
+    - **Stateless Intermediate Operations**: The processing of an element does not depend on the state or results of processing other elements. Each element is processed independently.
+        - Examples: `filter()`, `map()`, `flatMap()`, `peek()`.
+        - These are generally more efficient and easier to parallelize.
+    - **Stateful Intermediate Operations**: The processing of an element may depend on information derived from previously processed elements or require seeing all elements before proceeding. They need to maintain some state.
+        - Examples:
+            - `distinct()`: Needs to store elements seen so far to check for duplicates.
+            - `sorted()`: Needs to accumulate all elements before sorting can occur.
+            - `limit(n)` / `skip(n)`: While seemingly simple, they are stateful because they need to count elements. However, their state is usually small.
+        - Stateful operations can be more computationally expensive and may pose challenges for parallelization or require significant buffering.
+
+## Java 9+ Stream Enhancements
+
+**Q25: Briefly explain `takeWhile()` and `dropWhile()`. (Java 9+)**
+- **Answer**: These are intermediate operations that process elements based on a predicate, particularly useful for ordered streams.
+    - **`takeWhile(Predicate<? super T> predicate)`**: Returns a stream consisting of the longest prefix of elements taken from this stream that match the given predicate. Once an element is encountered that *does not* match the predicate, that element and all subsequent elements are discarded.
+    - **`dropWhile(Predicate<? super T> predicate)`**: Returns a stream consisting of the remaining elements of this stream after dropping the longest prefix of elements that match the given predicate. Once an element is encountered that *does not* match the predicate, that element and all subsequent elements are included in the result.
+
+**Q26: What is the improvement to `Stream.iterate()` in Java 9?**
+- **Answer**: In Java 8, `Stream.iterate(seed, unaryOperator)` created an infinite stream. To make it finite, you had to use `limit()`.
+- **Java 9 Improvement**: A new overload `Stream.iterate(seed, hasNextPredicate, nextFunction)` was added.
+    - `seed`: The initial element.
+    - `hasNextPredicate (Predicate<? super T> hasNext)`: A predicate applied to the current element. Iteration stops if this predicate returns `false`.
+    - `nextFunction (UnaryOperator<T> next)`: A function to produce the next element.
+  This allows creating finite streams more directly with `iterate()`, similar to a traditional `for` loop's condition.
+  ```java
+  // Java 8 (needed limit)
+  // Stream.iterate(0, n -> n + 1).limit(10).forEach(System.out::println);
+
+  // Java 9+
+  Stream.iterate(0, n -> n < 10, n -> n + 1).forEach(System.out::println);
+  ```
