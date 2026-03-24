@@ -1,0 +1,61 @@
+Strings in Java
+================
+
+String is a sequence of characters. In Java, String is an object (not a primitive).
+Strings are IMMUTABLE — once created, their value cannot be changed.
+
+1. CREATING STRINGS
+   String s1 = "Hello";              // String literal (stored in String Pool)
+   String s2 = new String("Hello");  // new object on heap (avoid this)
+
+2. STRING POOL
+   Java maintains a pool of String literals to save memory.
+   "Hello" == "Hello"  → true  (same pool reference)
+   new String("Hello") == new String("Hello") → false (different heap objects)
+   Always use .equals() to compare String content.
+
+3. IMPORTANT STRING METHODS
+   s.length()                  → length of string
+   s.charAt(i)                 → character at index i
+   s.indexOf("lo")             → first index of substring
+   s.lastIndexOf("l")          → last index of character
+   s.substring(2)              → from index 2 to end
+   s.substring(1, 4)           → from index 1 to 3
+   s.toUpperCase()             → all uppercase
+   s.toLowerCase()             → all lowercase
+   s.trim()                    → remove leading/trailing spaces
+   s.strip()                   → like trim() but Unicode-aware (Java 11+)
+   s.replace("a", "b")         → replace all occurrences
+   s.contains("ell")           → true/false
+   s.startsWith("He")          → true/false
+   s.endsWith("lo")            → true/false
+   s.equals("Hello")           → content comparison (case-sensitive)
+   s.equalsIgnoreCase("hello") → content comparison (case-insensitive)
+   s.isEmpty()                 → true if length == 0
+   s.isBlank()                 → true if empty or only whitespace (Java 11+)
+   s.split(",")                → split into String array
+   s.toCharArray()             → convert to char[]
+   String.valueOf(123)         → convert int/other to String
+   s.concat("World")           → concatenate strings
+
+4. STRING vs StringBuilder vs StringBuffer
+   String        → Immutable. New object on every modification. Use for fixed values.
+   StringBuilder → Mutable. Not thread-safe. Use for single-threaded string building.
+   StringBuffer  → Mutable. Thread-safe (synchronized). Use in multi-threaded code.
+
+   StringBuilder sb = new StringBuilder("Hello");
+   sb.append(" World");
+   sb.insert(5, ",");
+   sb.reverse();
+   sb.delete(0, 3);
+   sb.toString();  // convert back to String
+
+5. STRING FORMATTING
+   String.format("Name: %s, Age: %d", name, age)
+   "Hello %s".formatted("World")  // Java 15+
+
+6. COMMON INTERVIEW POINTS
+   - String is final class — cannot be subclassed
+   - + operator creates a new String object each time (use StringBuilder in loops)
+   - intern() method puts a String into the pool manually
+   - compareTo() compares lexicographically

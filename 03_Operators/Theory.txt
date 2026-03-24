@@ -1,0 +1,58 @@
+Operators in Java
+==================
+
+Operators are symbols that perform operations on variables and values.
+
+1. ARITHMETIC OPERATORS
+   +  → Addition
+   -  → Subtraction
+   *  → Multiplication
+   /  → Division
+   %  → Modulus (remainder)
+
+2. ASSIGNMENT OPERATORS
+   =   → Assign
+   +=  → Add and assign
+   -=  → Subtract and assign
+   *=  → Multiply and assign
+   /=  → Divide and assign
+   %=  → Modulus and assign
+
+3. COMPARISON (RELATIONAL) OPERATORS
+   ==  → Equal to
+   !=  → Not equal to
+   >   → Greater than
+   <   → Less than
+   >=  → Greater than or equal
+   <=  → Less than or equal
+
+4. LOGICAL OPERATORS
+   &&  → AND (both conditions true)
+   ||  → OR (at least one true)
+   !   → NOT (reverses condition)
+
+5. BITWISE OPERATORS
+   &   → Bitwise AND
+   |   → Bitwise OR
+   ^   → Bitwise XOR
+   ~   → Bitwise complement
+   <<  → Left shift
+   >>  → Right shift
+   >>> → Unsigned right shift
+
+6. UNARY OPERATORS
+   ++  → Increment (pre/post)
+   --  → Decrement (pre/post)
+   +   → Unary plus
+   -   → Unary minus
+
+7. TERNARY OPERATOR
+   condition ? valueIfTrue : valueIfFalse
+   Example: int max = (a > b) ? a : b;
+
+8. INSTANCEOF OPERATOR
+   Checks if an object is an instance of a class.
+   Example: if (obj instanceof String) { }
+
+OPERATOR PRECEDENCE (High to Low):
+   ()  →  ++/--  →  */% →  +/-  →  <</>>/>>>  →  </>/<=/>= →  ==/!=  →  &  →  ^  →  |  →  &&  →  ||  →  ?:  →  =

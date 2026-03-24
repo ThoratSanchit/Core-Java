@@ -1,0 +1,47 @@
+Generics in Java
+=================
+
+Generics allow you to write classes, interfaces, and methods that work with
+any data type while providing compile-time type safety.
+
+WHY GENERICS?
+Without generics, you'd use Object and need casting everywhere — error-prone.
+With generics, the compiler catches type mismatches at compile time.
+
+SYNTAX
+  class Box<T> { }          // T = Type parameter (placeholder)
+  Box<String> strBox = new Box<>();
+  Box<Integer> intBox = new Box<>();
+
+COMMON TYPE PARAMETER NAMES (convention)
+  T  → Type
+  E  → Element (used in Collections)
+  K  → Key (used in Maps)
+  V  → Value (used in Maps)
+  N  → Number
+
+GENERIC CLASS
+  class Pair<K, V> {
+      K key;
+      V value;
+  }
+
+GENERIC METHOD
+  public <T> void print(T item) {
+      System.out.println(item);
+  }
+
+BOUNDED TYPE PARAMETERS
+  <T extends Number>    → T must be Number or its subclass (Integer, Double, etc.)
+  <T super Integer>     → T must be Integer or its superclass
+
+WILDCARDS
+  <?>                   → unknown type (read-only)
+  <? extends Number>    → any subtype of Number (upper bound)
+  <? super Integer>     → any supertype of Integer (lower bound)
+
+BENEFITS
+  - Type safety at compile time
+  - No need for explicit casting
+  - Code reusability — one class/method works for all types
+  - Works with Collections Framework (List<String>, Map<K,V>, etc.)

@@ -1,0 +1,24 @@
+# Compiled Java class files
+*.class
+
+# IntelliJ IDEA
+.idea/
+*.iml
+out/
+
+# VS Code
+.vscode/
+tempCodeRunnerFile.java
+
+# Maven
+target/
+*.jar
+*.war
+
+# Gradle
+.gradle/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db

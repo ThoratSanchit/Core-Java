@@ -1,0 +1,39 @@
+File I/O in Java
+================
+
+Java provides multiple ways to read and write files.
+
+1. CLASSES IN java.io
+   File          → represents a file/directory path (doesn't read/write)
+   FileReader    → reads characters from a file
+   FileWriter    → writes characters to a file
+   BufferedReader → wraps FileReader for efficient line-by-line reading
+   BufferedWriter → wraps FileWriter for efficient writing
+   FileInputStream  → reads raw bytes (for binary files)
+   FileOutputStream → writes raw bytes (for binary files)
+
+2. CLASSES IN java.nio (Modern — preferred)
+   Files         → utility class with static methods (readAllLines, write, copy, etc.)
+   Path / Paths  → represents a file path
+   StandardOpenOption → APPEND, CREATE, WRITE, READ, etc.
+
+3. COMMON OPERATIONS
+   Read entire file  → Files.readAllLines(path) or Files.readString(path)
+   Write to file     → Files.writeString(path, content)
+   Append to file    → Files.writeString(path, content, StandardOpenOption.APPEND)
+   Check exists      → Files.exists(path)
+   Delete file       → Files.delete(path)
+   Copy file         → Files.copy(source, dest)
+   Create directory  → Files.createDirectories(path)
+
+4. TRY-WITH-RESOURCES
+   Always use try-with-resources to auto-close streams:
+   try (BufferedReader br = new BufferedReader(new FileReader("file.txt"))) {
+       String line;
+       while ((line = br.readLine()) != null) { ... }
+   }
+   The stream is automatically closed even if an exception occurs.
+
+5. EXCEPTION HANDLING
+   File operations throw IOException — always handle it.
+   FileNotFoundException is a subclass of IOException.
